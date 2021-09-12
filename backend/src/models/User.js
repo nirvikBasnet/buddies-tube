@@ -1,44 +1,45 @@
-import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const userSchema = new Schema({
-  firstName: {
+// we can add more fields later after we complete the authentication logic
+const UserSchema = new mongoose.Schema({
+  username: {
     type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
+    required: [true, "Please provide a username"]
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Please provide a email"],
+    unique: true,
+
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Please add a password"],
+    minlength: 6,
+    select: false
   },
-  joinedOn: {
-    type: Date,
-    default: new Date(),
-  },
-  lastLogin: {
-    type: Date,
-    default: new Date(),
-  },
-  subscriptions: {
-    type: Array,
-    default: [],
-  },
-  picture: {
-    type: String,
-    default: 'https://someplaceholder.com',
-  },
-  badges: {
-    type: Array,
-    default: ['new member'],
-  },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date
 });
 
-const User = new model('User', userSchema);
+//password hashing
 
-export default User;
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  this.password = await bcrypt.hash(this.password, salt);
+
+  next();
+
+
+})
+
+const User = mongoose.model("User", UserSchema);
+
+module.exports = User;

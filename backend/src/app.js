@@ -1,5 +1,5 @@
 import express from 'express';
-import usersRouter from '@routers/users';
+
 
 const app = express();
 
@@ -10,6 +10,6 @@ app.use(express.json());
 
 // setup routers
 
-app.use('/users', usersRouter);
+app.use('/api/auth', require('./routers/auth'));
 
 export default app;

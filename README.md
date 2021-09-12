@@ -34,6 +34,10 @@ A fullstack video-streaming [PWA](https://web.dev/progressive-web-apps/) built w
 - Recommendation Algorithm
 - Realtime communication
 
+## Getting started 
+
+- yarn install - in root, frontend and backend dir.
+
 ### Contributing
 
 There is something to contribute for everyone. Go through the [issues](https://github.com/askbuddie/buddies-tube/issues) and filter by the appropriate label.<br />
